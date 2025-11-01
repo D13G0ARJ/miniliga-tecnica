@@ -1,0 +1,13 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory; 
+use Illuminate\Database\Eloquent\Model;
+
+class Game extends Model
+{
+    use HasFactory; 
+
+    protected $fillable = ['home_score', 'away_score', 'home_team_id', 'away_team_id']; 
+}
