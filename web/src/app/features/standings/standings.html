@@ -1,0 +1,25 @@
+<section class="standings-container">
+  <h2>Tabla de Clasificación</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>PJ</th> <th>G</th>  <th>E</th>  <th>P</th>  <th>GF</th> <th>GC</th> <th>DG</th> <th>Puntos</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let team of standings$ | async">
+        <td>{{ team.name }}</td>
+        <td>{{ team.played }}</td>
+        <td>{{ team.wins }}</td>
+        <td>{{ team.draws }}</td>
+        <td>{{ team.losses }}</td>
+        <td>{{ team.goals_for }}</td>
+        <td>{{ team.goals_against }}</td>
+        <td>{{ team.goal_diff }}</td>
+        <td style="font-weight: bold;">{{ team.points }}</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
