@@ -1,0 +1,23 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>Partidos Pendientes</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Partidos Pendientes</ion-title>
+    </ion-toolbar>
+  </ion-header> <ion-list>
+    <ion-item *ngFor="let game of pendingGames$ | async">
+      <ion-label>
+        <h2>{{ game.home_team?.name }} vs {{ game.away_team?.name }}</h2>
+        <p>ID Partido: #{{ game.id }}</p>
+      </ion-label>
+      <ion-note slot="end">
+        Pendiente
+      </ion-note>
+    </ion-item>
+  </ion-list>
+</ion-content>
