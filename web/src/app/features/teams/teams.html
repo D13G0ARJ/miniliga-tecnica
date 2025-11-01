@@ -1,0 +1,40 @@
+<section classs="teams-container">
+  
+  <div class="form-container">
+    <h2>Crear Nuevo Equipo</h2>
+    
+    <form [formGroup]="teamForm" (ngSubmit)="onSubmit()">
+      
+      <div class="form-group">
+        <label for="name">Nombre del Equipo:</label>
+        <input id="name" type="text" formControlName="name" placeholder="Ej. Dragons">
+      </div>
+
+      <button type="submit" [disabled]="!teamForm.valid">Crear</button>
+    </form>
+  </div>
+
+  <div class="list-container">
+    <h2>Equipos Actuales</h2>
+    
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>GF</th>
+          <th>GC</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let team of teams$ | async">
+          <td>{{ team.id }}</td>
+          <td>{{ team.name }}</td>
+          <td>{{ team.goals_for }}</td>
+          <td>{{ team.goals_against }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</section>
