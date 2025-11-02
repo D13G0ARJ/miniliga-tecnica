@@ -5,6 +5,7 @@ www/
 # PHP / Laravel
 /vendor
 .env
+.env.testing
 .phpunit.result.cache
 Homestead.yaml
 Homestead.json
