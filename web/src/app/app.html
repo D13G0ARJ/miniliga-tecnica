@@ -1,0 +1,23 @@
+<nav mat-tab-nav-bar [tabPanel]="tabPanel">
+  
+  <a mat-tab-link
+     routerLink="/teams"
+     routerLinkActive #rla="routerLinkActive"
+     [active]="rla.isActive">
+    Equipos
+  </a>
+
+  <a mat-tab-link
+     routerLink="/standings"
+     routerLinkActive #rla="routerLinkActive"
+     [active]="rla.isActive">
+    Clasificación
+  </a>
+
+</nav>
+
+<mat-tab-nav-panel #tabPanel>
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</mat-tab-nav-panel>

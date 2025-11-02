@@ -1,33 +1,31 @@
-# Web (Angular) — MiniLiga Express
+```markdown
+# 🌐 Web (Angular)
 
-## Objetivo
-Dos pestañas:
-1) **Equipos**: listado + alta.
-2) **Clasificación**: tabla desde `GET /api/standings`.
+Aplicación construida con Angular (Standalone Components) y estilos de Angular Material.
 
-## Instalación
+## 💻 Funcionalidades Principales
+
+El frontend Web permite las siguientes operaciones:
+
+1.  **Pestaña Equipos:** Muestra el listado de equipos y un formulario reactivo para la creación de nuevos equipos (`POST /api/teams`).
+2.  **Pestaña Clasificación:** Muestra la tabla de clasificación ordenada (`GET /api/standings`).
+
+## 🧱 Arquitectura
+
+Se sigue una arquitectura basada en **Servicios Centralizados**:
+
+* **`ApiService`:** Única fuente de verdad que maneja las peticiones HTTP y la `API_URL`.
+* **Componentes:** Los componentes (`TeamsComponent`, `StandingsComponent`) son "tontos"; solo inyectan el servicio, llaman a los métodos (`this.api.getStandings()`) y renderizan los datos.
+
+## ▶️ Cómo Arrancar
+
 ```bash
-bash ../scripts/init_web.sh
+# Desde la raíz del repo principal, navega a la carpeta web
+cd web
+
+# Instalar dependencias (Si no lo hizo el init_web.sh)
+# npm install 
+
+# Inicia el servidor de desarrollo
 npm start
-```
-
-## API Service (ejemplo)
-Crea `src/app/services/api.service.ts`:
-```ts
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
-
-@Injectable({ providedIn: 'root' })
-export class ApiService {
-  private base = environment.API_URL;
-  constructor(private http: HttpClient) {}
-  getTeams() { return this.http.get<any[]>(`${this.base}/api/teams`); }
-  createTeam(payload: { name: string }) { return this.http.post(`${this.base}/api/teams`, payload); }
-  getStandings() { return this.http.get<any[]>(`${this.base}/api/standings`); }
-}
-```
-
-## UI mínima
-- `TeamsComponent`: formulario reactivo `{ name }` y tabla.
-- `StandingsComponent`: tabla con `team`, `played`, `goals_for`, `goals_against`, `goal_diff`, `points`.
+URL por defecto: http://localhost:4200

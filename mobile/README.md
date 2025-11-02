@@ -1,32 +1,47 @@
-# Móvil (Ionic + Capacitor) — MiniLiga Express
+```markdown
+# 📱 App Móvil (Ionic + Capacitor)
 
-## Objetivo
-- Página **Matches**: lista de próximos (sin resultado).
-- Página **Report Result**: form `home_score`, `away_score` → POST a `/api/matches/{id}/result`.
+Aplicación construida con Ionic (Angular Standalone) enfocada en la interacción de reportes.
 
-## Instalación
+## 🛠️ Funcionalidades Implementadas
+
+La aplicación móvil está diseñada para ser usada por un administrador de partidos:
+
+1.  **Pestaña Partidos:** Muestra un listado de **Partidos Pendientes** (`GET /api/games/pending`).
+2.  **Pestaña Reportar:** Contiene un formulario para seleccionar un partido y registrar su resultado (`POST /api/matches/{id}/result`).
+
+## 📷 Bonus: Funcionalidad de Cámara (Capacitor)
+
+Se incluyó la funcionalidad opcional de previsualización de foto en el formulario de reporte. Esto demuestra la integración con el plugin **`@capacitor/camera`** para acceder a funciones nativas del dispositivo.
+
+## ▶️ Cómo Arrancar
+
+Asegúrese de que el backend esté corriendo (`php artisan serve`).
+
 ```bash
-bash ../scripts/init_mobile.sh
-npm start
-```
+# Desde la raíz del repo principal, navega a la carpeta mobile
+cd mobile
 
-## Servicio API (ejemplo)
-`src/app/services/api.service.ts`:
-```ts
-import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
+# Inicia el servidor de Ionic
+ionic serve
+URL por defecto: http://localhost:8100
 
-@Injectable({ providedIn: 'root' })
-export class ApiService {
-  base = environment.API_URL;
-  constructor(private http: HttpClient) {}
-  getPendingMatches() { return this.http.get<any[]>(`${this.base}/api/matches?played=false`); } // o mock
-  reportResult(id: number, payload: { home_score: number; away_score: number }) {
-    return this.http.post(`${this.base}/api/matches/${id}/result`, payload);
-  }
-}
-```
+💻 Para Emulación Nativa (iOS/Android)
+Para generar el proyecto nativo y probar el bonus de la cámara en un simulador:
 
-## Bonus (opcional)
-- `@capacitor/camera` para previsualizar una foto antes de enviar (no obligatorio).
+Bash
+
+# Compilar la app para producción (genera la carpeta 'www')
+npm run build
+
+# Sincronizar el código compilado con las plataformas
+npx cap sync
+
+# Añadir plataforma (solo una vez)
+# npx cap add ios
+# npx cap add android
+
+# Abrir el IDE nativo (Xcode o Android Studio)
+npx cap open ios 
+# o
+# npx cap open android
