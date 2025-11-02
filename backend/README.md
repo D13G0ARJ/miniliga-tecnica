@@ -1,61 +1,83 @@
-## 🖥️ 2. `backend/README.md`
-
-Este archivo se enfoca en la API y cómo ejecutar las pruebas.
-
-```markdown
 # 🖥️ Backend (Laravel)
 
-El backend expone los datos necesarios para gestionar la liga y es el único responsable del cálculo de la clasificación (standings).
+Este directorio contiene la API de Laravel para el proyecto "MiniLiga Express". Es responsable de gestionar los datos de equipos, partidos y calcular la tabla de clasificación.
 
-## 🧩 Estructura y Tecnologías
+## 🛠️ Stack Tecnológico
 
-* **Framework:** Laravel 11+ (PHP).
-* **Database:** MySQL (Configurado en `.env` - **IMPORTANTE**).
-* **Modelos Clave:** `Team.php` y `Game.php` (usado en lugar de `Match` por palabra reservada de PHP).
-* **Controladores:** `TeamController`, `MatchController`, `StandingsController`.
+* **Framework:** Laravel 11+ (PHP 8.2+)
+* **Base de Datos:** MySQL (Elección deliberada sobre SQLite para un entorno más robusto)
+* **Testing:** PHPUnit (para el test de `Standings`)
 
-## ⚙️ Guía de Setup y Arranque (MySQL)
+## ⚙️ Guía de Setup y Arranque
 
-Para iniciar el proyecto, siga estos pasos:
+Siga estos pasos para levantar el servidor backend localmente.
 
-### 1. Configuración del Entorno (`.env`)
+### 1. Configuración del Entorno (.env)
 
-Cree una base de datos MySQL (ej. `miniliga`) y configure su archivo `.env` en la carpeta `backend/` con sus credenciales:
+El proyecto está configurado para usar MySQL.
 
-```dotenv
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=miniliga  # <-- Nombre de su base de datos
-DB_USERNAME=root      # <-- Su usuario de MySQL
-DB_PASSWORD=          # <-- Su contraseña de MySQL
+1.  Asegúrese de tener una base de datos MySQL creada (ej. `miniliga`).
+2.  Copie el archivo de ejemplo de entorno:
+    ```bash
+    cp .env.example .env
+    ```
+3.  Edite el archivo `.env` con sus credenciales de base de datos:
+    ```dotenv
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=miniliga  # <-- Ponga aquí el nombre de su BD
+    DB_USERNAME=root      # <-- Ponga aquí su usuario de MySQL
+    DB_PASSWORD=          # <-- Ponga aquí su contraseña de MySQL
+    ```
 
-## 🗺️ Endpoints Implementados
+### 2. Instalación y Arranque
 
-| Método | Ruta | Descripción |
-| :--- | :--- | :--- |
-| `GET` | `/api/teams` | Listado de todos los equipos. |
-| `POST` | `/api/teams` | Creación de un nuevo equipo (`{ name }`). |
-| `POST` | `/api/matches/{id}/result` | Registra el marcador (`{ home_score, away_score }`) y actualiza las estadísticas de los equipos. |
-| `GET` | `/api/standings` | Devuelve la tabla de clasificación ordenada. |
-| **Extra** | `/api/games/pending` | Endpoint para la app móvil: lista los partidos sin resultado. |
+1.  **Instalar dependencias de Composer:**
+    ```bash
+    composer install
+    ```
+2.  **Generar la llave de la aplicación:**
+    ```bash
+    php artisan key:generate
+    ```
+3.  **Ejecutar Migraciones y Seeders:**
+    Este comando creará todas las tablas y las poblará con datos de prueba (4 equipos y 2 partidos).
+    ```bash
+    php artisan migrate:refresh --seed
+    ```
+4.  **Levantar el servidor:**
+    ```bash
+    php artisan serve
+    ```
+El servidor estará disponible en `http://127.0.0.1:8000`.
 
-## 📐 Lógica de Clasificación
+---
 
-La tabla se calcula con: `W=3`, `D=1`, `L=0`.
+## ✅ Cómo Correr el Test de Standings
 
-* **Ordenamiento:**
-    1.  `points` (DESC)
-    2.  `goal_diff` (DESC)
-    3.  `goals_for` (DESC)
+Cumpliendo con los criterios de evaluación, el proyecto incluye un test (`StandingsTest.php`) que valida la lógica de cálculo de puntos.
 
-## ✅ Ejecución de Pruebas
+Para ejecutarlo, necesita una base de datos de prueba separada (para no borrar sus datos de desarrollo).
 
-Para validar la lógica de standings, se incluye un Feature Test.
+### Paso 1: Configurar la Base de Datos de Prueba
+
+1.  Cree una **segunda base de datos** en MySQL (ej. `miniliga_test`).
+2.  Cree un archivo `.env.testing` en la raíz de `backend/`.
+3.  Copie el siguiente contenido en `.env.testing` (apuntando a su nueva BD de prueba):
+
+    ```dotenv
+    DB_CONNECTION=mysql
+    DB_HOST=127.0.0.1
+    DB_PORT=3306
+    DB_DATABASE=miniliga_test  # <-- BD de prueba
+    DB_USERNAME=root           # <-- Su usuario
+    DB_PASSWORD=              # <-- Su contraseña
+    ```
+
+### Paso 2: Ejecutar PHPUnit
+
+Con el archivo `.env.testing` creado, ejecute el comando de test:
 
 ```bash
-# Asegúrate de que el servidor MySQL esté corriendo
-cd backend
-
-# Ejecuta todos los tests (incluyendo StandingsTest.php)
 php artisan test
